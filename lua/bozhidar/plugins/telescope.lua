@@ -10,6 +10,7 @@ return {
 	config = function()
 		local telescope = require("telescope")
 		local actions = require("telescope.actions")
+		local telescope_builtin = require("telescope.builtin")
 
 		telescope.setup({
 			defaults = {
@@ -34,5 +35,7 @@ return {
 		keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
 		keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
 		keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
+		keymap.set("n", "gr", telescope_builtin.lsp_references, { desc = "Find references" })
+		keymap.set("n", "gy", telescope_builtin.lsp_type_definitions, { desc = "Go to type definition" })
 	end,
 }
