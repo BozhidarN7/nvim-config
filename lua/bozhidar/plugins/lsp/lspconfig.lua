@@ -3,6 +3,11 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
+		"hrsh7th/nvim-cmp",
+		"hrsh7th/cmp-buffer",
+		"hrsh7th/cmp-path", -- added this line for cmp-path
+		"saadparwaiz1/cmp_luasnip",
+		"L3MON4D3/LuaSnip",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
 	},
@@ -22,7 +27,7 @@ return {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
 				-- Buffer local mappings.
-				-- See `:help vim.lsp.*` for documentation on any of the below functions
+				-- See :help vim.lsp.* for documentation on any of the below functions
 				local opts = { buffer = ev.buf, silent = true }
 
 				-- set keybinds
@@ -60,7 +65,7 @@ return {
 				keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
 
 				opts.desc = "Show documentation for what is under cursor"
-				keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+				keymap.set("n", "<F12>", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
 
 				opts.desc = "Restart LSP"
 				keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
@@ -165,7 +170,7 @@ return {
 						tailwindCSS = {
 							experimental = {
 								classRegex = {
-									{ "tw`([^`]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw`` template literals
+									{ "tw([^]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw` template literals
 								},
 							},
 						},

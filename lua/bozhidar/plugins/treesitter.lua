@@ -56,5 +56,31 @@ return {
 
 		-- configure nvim-ts-autotag separately if needed
 		require("nvim-ts-autotag").setup()
+
+		-- configure nvim-tree
+		require("nvim-tree").setup({
+			update_focused_file = {
+				enable = true,
+				update_cwd = true,
+			},
+			view = {
+				width = 30,
+				side = "left",
+			},
+			filters = {
+				dotfiles = false,
+			},
+			actions = {
+				open_file = {
+					quit_on_open = false,
+				},
+			},
+			tab = {
+				sync = {
+					open = true, -- Open the three automatically when switching tabs
+					close = false, -- Do not close the three when switching tabs
+				},
+			},
+		})
 	end,
 }

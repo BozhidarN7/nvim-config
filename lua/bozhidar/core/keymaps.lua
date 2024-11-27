@@ -30,3 +30,16 @@ keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" 
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+
+-- Remap Shift+J and Shift+K for scrolling
+keymap.set("n", "J", "<C-e>", { noremap = true, silent = true })
+keymap.set("n", "K", "<C-y>", { noremap = true, silent = true })
+
+-- Move a single line up
+keymap.set("n", "<A-k>", ":m .-2<CR>==", { noremap = true, silent = true })
+-- Move a single line down
+keymap.set("n", "<A-j>", ":m .+1<CR>==", { noremap = true, silent = true })
+-- Move a visual selection up
+keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+-- Move a visual selection down
+keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
