@@ -32,8 +32,8 @@ keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) 
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 -- Remap Shift+J and Shift+K for scrolling
-keymap.set("n", "J", "<C-e>", { noremap = true, silent = true })
-keymap.set("n", "K", "<C-y>", { noremap = true, silent = true })
+-- keymap.set("n", "J", "<C-e>", { noremap = true, silent = true }) -- currently controlled by neoscroll
+-- keymap.set("n", "K", "<C-y>", { noremap = true, silent = true }) -- currently controlled by neoscroll
 
 -- Move a single line up
 keymap.set("n", "<A-k>", ":m .-2<CR>==", { noremap = true, silent = true })
