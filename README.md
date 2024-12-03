@@ -46,3 +46,23 @@
 ### Additional commands
 
 - :messages - shows latest messages and errors
+
+# Neovim Scrolling and Viewport Adjustment Commands
+
+## Overview
+
+Neovim provides various commands to navigate and adjust the viewport in a file. These commands help with efficient scrolling and viewing of content.
+
+### Commands
+
+| Command | Description                                                     |
+| ------- | --------------------------------------------------------------- |
+| `<C-u>` | Scroll half a screen upwards.                                   |
+| `<C-d>` | Scroll half a screen downwards.                                 |
+| `<C-b>` | Scroll one full screen upwards (similar to "page up").          |
+| `<C-f>` | Scroll one full screen downwards (similar to "page down").      |
+| `<C-y>` | Scroll the viewport up by one line without moving the cursor.   |
+| `<C-e>` | Scroll the viewport down by one line without moving the cursor. |
+| `zt`    | Move the current line to the top of the screen.                 |
+| `zz`    | Move the current line to the center of the screen.              |
+| `zb`    | Move the current line to the bottom of the screen.              |
