@@ -66,3 +66,17 @@ Neovim provides various commands to navigate and adjust the viewport in a file. 
 | `zt`    | Move the current line to the top of the screen.                 |
 | `zz`    | Move the current line to the center of the screen.              |
 | `zb`    | Move the current line to the bottom of the screen.              |
+
+## Tabs
+
+`:tabonly` - Close all tabs except the current one.
+
+## Surrounding text
+
+| **Command**        | **Mode** | **Description**                                        | **Example**                                 |
+| ------------------ | -------- | ------------------------------------------------------ | ------------------------------------------- |
+| `ys<motion><char>` | Normal   | Surround a motion with a character.                    | `ysw"` → Surround a word with `"`           |
+| `yss<char>`        | Normal   | Surround the entire line with a character.             | `yss(` → Surround line with `(` and `)`     |
+| `vS<char>`         | Visual   | Surround the selected text with a character.           | Select text, press `S"` → Surround with `"` |
+| `cs<old><new>`     | Normal   | Change surrounding characters from `<old>` to `<new>`. | `cs"'` → Change `"` to `'`                  |
+| `ds<char>`         | Normal   | Delete surrounding characters specified by `<char>`.   | `ds"` → Remove `"` around text              |
