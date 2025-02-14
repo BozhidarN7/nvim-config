@@ -80,3 +80,14 @@ Neovim provides various commands to navigate and adjust the viewport in a file. 
 | `vS<char>`         | Visual   | Surround the selected text with a character.           | Select text, press `S"` → Surround with `"` |
 | `cs<old><new>`     | Normal   | Change surrounding characters from `<old>` to `<new>`. | `cs"'` → Change `"` to `'`                  |
 | `ds<char>`         | Normal   | Delete surrounding characters specified by `<char>`.   | `ds"` → Remove `"` around text              |
+
+# `nvim-tree` Commands and Settings for Navigation and File Explorer
+
+## Searching for Files
+
+F - Enter search mode
+Esc or Ctrl + U - Clear the search filter
+
+```
+
+```
