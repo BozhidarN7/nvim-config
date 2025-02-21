@@ -47,3 +47,7 @@ keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 -- Map Ctrl+S to save manually
 keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
 keymap.set("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true, silent = true })
+
+-- Reorder tabs
+keymap.set("n", "<A-h>", ":tabm -1<CR>", { noremap = true, silent = true })
+keymap.set("n", "<A-l>", ":tabm +1<CR>", { noremap = true, silent = true })

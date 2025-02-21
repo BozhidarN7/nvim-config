@@ -88,6 +88,14 @@ Neovim provides various commands to navigate and adjust the viewport in a file. 
 F - Enter search mode
 Esc or Ctrl + U - Clear the search filter
 
+## **Commands for Reordering Tabs**
+
+- `:tabm [N]` → Move the current tab to position **N** (zero-based index).
+- `:tabm +1` → Move the current tab **one position to the right**.
+- `:tabm -1` → Move the current tab **one position to the left**.
+- `:tabm 0` → Move the current tab to the **first position**.
+- `:tabm $` → Move the current tab to the **last position**.```
+
 ```
 
 ```
