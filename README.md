@@ -96,6 +96,26 @@ Esc or Ctrl + U - Clear the search filter
 - `:tabm 0` → Move the current tab to the **first position**.
 - `:tabm $` → Move the current tab to the **last position**.```
 
-```
+````
+## Neovim Search Commands Cheat Sheet
 
-```
+### **1. Search for the Word Under Cursor**
+- `*` → Search **forward** for the word under the cursor.
+- `#` → Search **backward** for the word under the cursor.
+- `g*` → Search **forward**, allowing partial matches.
+- `g#` → Search **backward**, allowing partial matches.
+
+---
+
+### **2. Recall and Edit the Last Search**
+- `q/` → Open the search history and edit previous searches.
+- `/` or `?` → Press `<Up>` (`↑`) to recall the last search pattern and modify it.
+
+---
+
+### **3. Reuse the Last Search Pattern**
+Use `@/` to reference the last search pattern in commands like substitution:
+
+```vim
+:%s//@/new_text/g
+````
