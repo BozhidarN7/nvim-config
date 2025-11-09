@@ -13,7 +13,7 @@ return {
 	},
 	config = function()
 		-- import lspconfig plugin
-		local lspconfig = require("lspconfig")
+		local lspconfig = vim.lsp.config
 
 		-- import mason_lspconfig plugin
 		local mason_lspconfig = require("mason-lspconfig")
@@ -95,100 +95,102 @@ return {
 			update_in_insert = false,
 			severity_sort = true,
 		})
-		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["svelte"] = function()
-				-- configure svelte server
-				lspconfig["svelte"].setup({
-					capabilities = capabilities,
-					on_attach = function(client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePost", {
-							pattern = { "*.js", "*.ts" },
-							callback = function(ctx)
-								-- Here use ctx.match instead of ctx.file
-								client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-							end,
-						})
-					end,
-				})
-			end,
-			["ts_ls"] = function()
-				lspconfig["ts_ls"].setup({
-					capabilities = capabilities,
-					filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "jsx", "tsx" }, -- React file types
-					settings = {
-						completions = {
-							completeFunctionCalls = true,
-						},
-					},
-				})
-			end,
-			["graphql"] = function()
-				-- configure graphql language server
-				lspconfig["graphql"].setup({
-					capabilities = capabilities,
-					filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-				})
-			end,
-			["emmet_ls"] = function()
-				-- configure emmet language server
-				lspconfig["emmet_ls"].setup({
-					capabilities = capabilities,
-					filetypes = {
-						"html",
-						"typescriptreact",
-						"javascriptreact",
-						"css",
-						"sass",
-						"scss",
-						"less",
-						"svelte",
-					},
-				})
-			end,
-			["lua_ls"] = function()
-				-- configure lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
-					settings = {
-						Lua = {
-							-- make the language server recognize "vim" global
-							diagnostics = {
-								globals = { "vim" },
-							},
-							completion = {
-								callSnippet = "Replace",
+		mason_lspconfig.setup({
+			handlers = {
+				-- default handler for installed servers
+				function(server_name)
+					lspconfig(server_name, {
+						capabilities = capabilities,
+					})
+				end,
+				["svelte"] = function()
+					-- configure svelte server
+					lspconfig("svelte", {
+						capabilities = capabilities,
+						on_attach = function(client, bufnr)
+							vim.api.nvim_create_autocmd("BufWritePost", {
+								pattern = { "*.js", "*.ts" },
+								callback = function(ctx)
+									-- Here use ctx.match instead of ctx.file
+									client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+								end,
+							})
+						end,
+					})
+				end,
+				["ts_ls"] = function()
+					lspconfig("ts_ls", {
+						capabilities = capabilities,
+						filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "jsx", "tsx" }, -- React file types
+						settings = {
+							completions = {
+								completeFunctionCalls = true,
 							},
 						},
-					},
-				})
-			end,
-			["tailwindcss"] = function()
-				lspconfig["tailwindcss"].setup({
-					capabilities = capabilities,
-					filetypes = { "typescriptreact", "javascriptreact", "html", "css", "svelte", "vue" }, -- Add supported file types
-					init_options = {
-						userLanguages = {
-							typescript = "typescriptreact",
-							javascript = "javascriptreact",
+					})
+				end,
+				["graphql"] = function()
+					-- configure graphql language server
+					lspconfig("graphql", {
+						capabilities = capabilities,
+						filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+					})
+				end,
+				["emmet_ls"] = function()
+					-- configure emmet language server
+					lspconfig("emmet_ls", {
+						capabilities = capabilities,
+						filetypes = {
+							"html",
+							"typescriptreact",
+							"javascriptreact",
+							"css",
+							"sass",
+							"scss",
+							"less",
+							"svelte",
 						},
-					},
-					settings = {
-						tailwindCSS = {
-							experimental = {
-								classRegex = {
-									{ "tw([^]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw` template literals
+					})
+				end,
+				["lua_ls"] = function()
+					-- configure lua server (with special settings)
+					lspconfig("lua_ls", {
+						capabilities = capabilities,
+						settings = {
+							Lua = {
+								-- make the language server recognize "vim" global
+								diagnostics = {
+									globals = { "vim" },
+								},
+								completion = {
+									callSnippet = "Replace",
 								},
 							},
 						},
-					},
-				})
-			end,
+					})
+				end,
+				["tailwindcss"] = function()
+					lspconfig("tailwindcss", {
+						capabilities = capabilities,
+						filetypes = { "typescriptreact", "javascriptreact", "html", "css", "svelte", "vue" }, -- Add supported file types
+						init_options = {
+							userLanguages = {
+								typescript = "typescriptreact",
+								javascript = "javascriptreact",
+							},
+						},
+						settings = {
+							tailwindCSS = {
+								experimental = {
+									classRegex = {
+										{ "tw([^]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw` template literals
+									},
+								},
+							},
+						},
+					})
+				end,
+			},
 		})
 	end,
 }

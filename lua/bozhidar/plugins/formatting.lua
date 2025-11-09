@@ -35,5 +35,12 @@ return {
 				timeout_ms = 2000,
 			})
 		end, { desc = "Format file or range (in visual mode)" })
+		vim.api.nvim_create_user_command("FormatNow", function()
+			require("conform").format({
+				lsp_fallback = true,
+				async = false,
+				timeout_ms = 2000,
+			})
+		end, { desc = "Format file now" })
 	end,
 }
