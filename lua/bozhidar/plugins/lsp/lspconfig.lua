@@ -9,11 +9,11 @@ return {
 		"saadparwaiz1/cmp_luasnip",
 		"L3MON4D3/LuaSnip",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
-		{ "folke/neodev.nvim", opts = {} },
+		{ "folke/lazydev.nvim", opts = {} },
 	},
 	config = function()
 		-- import lspconfig plugin
-		local lspconfig = require("lspconfig")
+		local lspconfig = vim.lsp.config
 
 		-- import mason_lspconfig plugin
 		local mason_lspconfig = require("mason-lspconfig")
@@ -59,10 +59,14 @@ return {
 				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				keymap.set("n", "[d", function()
+					vim.diagnostic.jump({ forward = false, count = -1 })
+				end, opts) -- jump to previous diagnostic in buffer
 
 				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				keymap.set("n", "]d", function()
+					vim.diagnostic.jump({ forward = true, count = 1 })
+				end, opts) -- jump to next diagnostic in buffer
 
 				opts.desc = "Show documentation for what is under cursor"
 				keymap.set("n", "<F12>", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -77,106 +81,116 @@ return {
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
-
-		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["svelte"] = function()
-				-- configure svelte server
-				lspconfig["svelte"].setup({
-					capabilities = capabilities,
-					on_attach = function(client, bufnr)
-						vim.api.nvim_create_autocmd("BufWritePost", {
-							pattern = { "*.js", "*.ts" },
-							callback = function(ctx)
-								-- Here use ctx.match instead of ctx.file
-								client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-							end,
-						})
-					end,
-				})
-			end,
-			["ts_ls"] = function()
-				lspconfig["ts_ls"].setup({
-					capabilities = capabilities,
-					filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "jsx", "tsx" }, -- React file types
-					settings = {
-						completions = {
-							completeFunctionCalls = true,
-						},
-					},
-				})
-			end,
-			["graphql"] = function()
-				-- configure graphql language server
-				lspconfig["graphql"].setup({
-					capabilities = capabilities,
-					filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-				})
-			end,
-			["emmet_ls"] = function()
-				-- configure emmet language server
-				lspconfig["emmet_ls"].setup({
-					capabilities = capabilities,
-					filetypes = {
-						"html",
-						"typescriptreact",
-						"javascriptreact",
-						"css",
-						"sass",
-						"scss",
-						"less",
-						"svelte",
-					},
-				})
-			end,
-			["lua_ls"] = function()
-				-- configure lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
-					settings = {
-						Lua = {
-							-- make the language server recognize "vim" global
-							diagnostics = {
-								globals = { "vim" },
-							},
-							completion = {
-								callSnippet = "Replace",
+		vim.diagnostic.config({
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = "✘", -- U+2718
+					[vim.diagnostic.severity.WARN] = "▲", -- U+25B2
+					[vim.diagnostic.severity.INFO] = "", -- U+F129
+					[vim.diagnostic.severity.HINT] = "⚑", -- U+2691
+				},
+			},
+			virtual_text = true,
+			underline = true,
+			update_in_insert = false,
+			severity_sort = true,
+		})
+		mason_lspconfig.setup({
+			handlers = {
+				-- default handler for installed servers
+				function(server_name)
+					lspconfig(server_name, {
+						capabilities = capabilities,
+					})
+				end,
+				["svelte"] = function()
+					-- configure svelte server
+					lspconfig("svelte", {
+						capabilities = capabilities,
+						on_attach = function(client, bufnr)
+							vim.api.nvim_create_autocmd("BufWritePost", {
+								pattern = { "*.js", "*.ts" },
+								callback = function(ctx)
+									-- Here use ctx.match instead of ctx.file
+									client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+								end,
+							})
+						end,
+					})
+				end,
+				["ts_ls"] = function()
+					lspconfig("ts_ls", {
+						capabilities = capabilities,
+						filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "jsx", "tsx" }, -- React file types
+						settings = {
+							completions = {
+								completeFunctionCalls = true,
 							},
 						},
-					},
-				})
-			end,
-			["tailwindcss"] = function()
-				lspconfig["tailwindcss"].setup({
-					capabilities = capabilities,
-					filetypes = { "typescriptreact", "javascriptreact", "html", "css", "svelte", "vue" }, -- Add supported file types
-					init_options = {
-						userLanguages = {
-							typescript = "typescriptreact",
-							javascript = "javascriptreact",
+					})
+				end,
+				["graphql"] = function()
+					-- configure graphql language server
+					lspconfig("graphql", {
+						capabilities = capabilities,
+						filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+					})
+				end,
+				["emmet_ls"] = function()
+					-- configure emmet language server
+					lspconfig("emmet_ls", {
+						capabilities = capabilities,
+						filetypes = {
+							"html",
+							"typescriptreact",
+							"javascriptreact",
+							"css",
+							"sass",
+							"scss",
+							"less",
+							"svelte",
 						},
-					},
-					settings = {
-						tailwindCSS = {
-							experimental = {
-								classRegex = {
-									{ "tw([^]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw` template literals
+					})
+				end,
+				["lua_ls"] = function()
+					-- configure lua server (with special settings)
+					lspconfig("lua_ls", {
+						capabilities = capabilities,
+						settings = {
+							Lua = {
+								-- make the language server recognize "vim" global
+								diagnostics = {
+									globals = { "vim" },
+								},
+								completion = {
+									callSnippet = "Replace",
 								},
 							},
 						},
-					},
-				})
-			end,
+					})
+				end,
+				["tailwindcss"] = function()
+					lspconfig("tailwindcss", {
+						capabilities = capabilities,
+						filetypes = { "typescriptreact", "javascriptreact", "html", "css", "svelte", "vue" }, -- Add supported file types
+						init_options = {
+							userLanguages = {
+								typescript = "typescriptreact",
+								javascript = "javascriptreact",
+							},
+						},
+						settings = {
+							tailwindCSS = {
+								experimental = {
+									classRegex = {
+										{ "tw([^]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw` template literals
+									},
+								},
+							},
+						},
+					})
+				end,
+			},
 		})
 	end,
 }
