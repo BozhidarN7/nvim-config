@@ -9,6 +9,7 @@ return {
 		config = function()
 			require("CopilotChat").setup({
 				show_help = true, -- show help in response
+				model = "gpt-5.2",
 			})
 		end,
 		keys = {
