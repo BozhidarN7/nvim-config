@@ -103,12 +103,6 @@ return {
 						capabilities = capabilities,
 					})
 				end,
-				["lit"] = function()
-					lspconfig("lit", {
-						capabilities = capabilities,
-						filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-					})
-				end,
 				["svelte"] = function()
 					-- configure svelte server
 					lspconfig("svelte", {
@@ -131,23 +125,6 @@ return {
 						settings = {
 							completions = {
 								completeFunctionCalls = true,
-							},
-							typescript = {
-								inlayHints = {
-									includeInlayParameterNameHints = "all",
-								},
-							},
-							javascript = {
-								inlayHints = {
-									includeInlayParameterNameHints = "all",
-								},
-							},
-							plugins = {
-								{
-									name = "typescript-lit-html-plugin",
-									location = vim.fn.stdpath("data") .. "/lit-packages/node_modules/typescript-lit-html-plugin",
-									languages = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-								},
 							},
 						},
 					})
@@ -207,8 +184,23 @@ return {
 								experimental = {
 									classRegex = {
 										{ "tw([^]*)", "tw\\(([^)]*)\\)", "tw\\{([^}]*)\\}" }, -- Add support for classnames inside tw` template literals
-										{ "html`([^`]*)`", "class=\"([^\"]*)\"" }, -- Lit HTML template literals
 									},
+								},
+							},
+						},
+					})
+				end,
+				["pyright"] = function()
+					lspconfig("pyright", {
+						capabilities = capabilities,
+						settings = {
+							python = {
+								analysis = {
+									typeCheckingMode = "strict",
+									autoImportCompletions = true,
+									autoSearchPaths = true,
+									useLibraryCodeForTypes = true,
+									diagnosticMode = "workspace",
 								},
 							},
 						},

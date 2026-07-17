@@ -13,6 +13,7 @@ keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- delete single character without copying into register
+-- keymap.set("n", "x", '"_x')
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
@@ -43,7 +44,7 @@ keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 -- Move a visual selection down
 keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 
--- Map Command+S to save manually
+-- Map Ctrl+S to save manually
 keymap.set("n", "<C-s>", ":w<CR>", { noremap = true, silent = true })
 keymap.set("i", "<C-s>", "<Esc>:w<CR>a", { noremap = true, silent = true })
 
